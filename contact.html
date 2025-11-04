@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>اتصل بنا | المنزل الراقي</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{margin:0;font-family:"Noto Naskh Arabic UI",sans-serif;background:#f5efe6}
+main{max-width:1000px;margin:30px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h2{color:#8b5e3c;margin-bottom:15px}
+form{display:grid;gap:15px}
+input,textarea{padding:10px;border:1px solid #ccc;border-radius:8px;font-family:inherit}
+button{background:#8b5e3c;color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:bold}
+button:hover{background:#6f4b30}
+</style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main>
+  <h2>تواصل معنا</h2>
+  <p>يسعدنا تواصلك معنا عبر النموذج أدناه، وسنرد في أقرب وقت ممكن.</p>
+  <form onsubmit="event.preventDefault();alert('تم إرسال رسالتك بنجاح!');this.reset();">
+    <input type="text" placeholder="الاسم الكامل" required>
+    <input type="email" placeholder="البريد الإلكتروني" required>
+    <textarea rows="5" placeholder="رسالتك..." required></textarea>
+    <button type="submit">إرسال</button>
+  </form>
+</main>
+<div id="footer-placeholder"></div>
+
+<script>
+async function includeHTML(id,file){
+  const el=document.getElementById(id);
+  const res=await fetch(file);
+  el.innerHTML=await res.text();
+  if(file.includes('header')) initHeader();
+}
+includeHTML("header-placeholder","./header.html");
+includeHTML("footer-placeholder","./footer.html");
+
+function initHeader(){
+  const burger=document.getElementById("burger");
+  const nav=document.getElementById("mobileNav");
+  const close=document.getElementById("closeNav");
+  if(!burger||!nav)return;
+  burger.onclick=()=>nav.classList.add("active");
+  close.onclick=()=>nav.classList.remove("active");
+  nav.querySelectorAll("a").forEach(a=>a.onclick=()=>nav.classList.remove("active"));
+}
+</script>
+</body>
+</html>

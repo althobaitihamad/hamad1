@@ -1,0 +1,43 @@
+<footer class="site-footer" dir="rtl" lang="ar">
+  <style>
+    :root{--wood:#8b5e3c;--dark:#181818;--beige:#f5efe6;}
+    .site-footer{
+      background:linear-gradient(135deg,#1e1e1e,#0f0f0f);
+      color:#f5efe6; font-family:"Noto Naskh Arabic UI",sans-serif;
+      border-top:2px solid var(--wood); margin-top:40px;
+    }
+    .container{max-width:1200px;margin:auto;padding:30px 20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+    h3{color:var(--wood);margin-bottom:10px}
+    a{color:#f5efe6;text-decoration:none;display:block;margin:5px 0}
+    a:hover{color:var(--wood)}
+    .about p{color:#ddd;line-height:1.7}
+    .copy{text-align:center;padding:15px;background:#0d0d0d;border-top:1px solid #333}
+    @media (max-width:900px){ .container{grid-template-columns:1fr} }
+  </style>
+
+  <div class="container">
+    <div class="about">
+      <h3>عن «المنزل الراقي»</h3>
+      <p>متجر سعودي متخصص في المنتجات المنزلية الفاخرة بتصاميم مستوحاة من الألوان الخشبية والبيج.</p>
+    </div>
+    <div>
+      <h3>روابط سريعة</h3>
+      <a href="./index.html#home">الرئيسية</a>
+      <a href="./index.html#products">المنتجات</a>
+      <a href="./index.html#offers">العروض</a>
+      <a href="./contact.html">اتصل بنا</a>
+    </div>
+    <div>
+      <h3>تواصل معنا</h3>
+      <a href="mailto:hello@eleganthome.sa">hello@eleganthome.sa</a>
+      <a href="tel:+966500000000">+966 50 000 0000</a>
+      <a href="https://wa.me/966500000000" target="_blank">واتساب مباشر</a>
+    </div>
+  </div>
+
+  <div class="copy">
+    © <span id="year"></span> جميع الحقوق محفوظة — <strong>المنزل الراقي</strong> | تصميم: <strong>حمد الثبيتي</strong>
+  </div>
+
+  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+</footer>

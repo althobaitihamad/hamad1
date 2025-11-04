@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>المنزل الراقي | متجر المنتجات المنزلية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{margin:0;font-family:"Noto Naskh Arabic UI",sans-serif;background-color:#f5efe6}
+    main{max-width:1200px;margin:20px auto;padding:0 20px}
+    h2{color:#8b5e3c;margin-bottom:10px}
+    .hero{position:relative;width:100%;height:80vh;overflow:hidden;border-bottom:4px solid #8b5e3c}
+    .hero video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.6)}
+    .hero-content{position:absolute;top:50%;right:10%;transform:translateY(-50%);color:#fff;text-align:right;background:rgba(0,0,0,.45);padding:25px;border-radius:12px;max-width:500px}
+    .hero-content h1{font-size:2rem;margin-bottom:10px;color:#f5efe6}
+    .hero-content p{font-size:1.1rem;line-height:1.6;color:#ddd}
+    .hero-content .btn{margin-top:15px;display:inline-block;background:#8b5e3c;color:#fff;padding:10px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;transition:.3s}
+    .hero-content .btn:hover{background:#6f4b30}
+    @media (max-width:700px){.hero-content{right:5%;left:5%;text-align:center}.hero-content h1{font-size:1.6rem}.hero-content p{font-size:1rem}}
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+    .card{background:#fff;border:1px solid #ddd;border-radius:10px;overflow:hidden;transition:.3s}
+    .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+    .card img{width:100%;height:200px;object-fit:cover}
+    .card .info{padding:10px}
+    .card .info h3{margin:5px 0;color:#333}
+    .card .info p{color:#666;font-size:.9rem}
+    .btn{background:#8b5e3c;color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;transition:.3s}
+    .btn:hover{background:#6f4b30}
+  </style>
+</head>
+<body>
+
+  <div id="header-placeholder">جارٍ تحميل الشريط العلوي...</div>
+
+  <main>
+    <section class="hero" id="home">
+      <video autoplay muted loop playsinline>
+        <source src="./midea/v1000.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+      <div class="hero-content">
+        <h1>المنزل الراقي ✨</h1>
+        <p>اختيارات فاخرة من الديكور والأثاث والإكسسوارات المنزلية تمنح منزلك لمسة أناقة ودفء.</p>
+        <button class="btn" onclick="location.href='#products'">تسوق الآن</button>
+      </div>
+    </section>
+
+    <section id="products">
+      <h2>أحدث المنتجات</h2>
+      <div class="products" id="productList"></div>
+    </section>
+  </main>
+
+  <div id="footer-placeholder">جارٍ تحميل الفوتر...</div>
+
+  <script>
+    // تحميل الهيدر والفوتر ثم تفعيل القوائم
+    async function includeHTML(id, file){
+      const el=document.getElementById(id);
+      try{
+        const res=await fetch(file);
+        el.innerHTML=await res.text();
+        if(file.includes('header')) initHeader(); // تفعيل القائمة بعد التحميل
+      }catch{el.innerHTML="<p>تعذر تحميل "+file+"</p>";}
+    }
+
+    includeHTML("header-placeholder","./header.html");
+    includeHTML("footer-placeholder","./footer.html");
+
+    // تفعيل وظائف الهيدر
+    function initHeader(){
+      const burger=document.getElementById("burger");
+      const nav=document.getElementById("mobileNav");
+      const close=document.getElementById("closeNav");
+      const form=document.getElementById("searchForm");
+      if(!burger||!nav)return;
+      burger.onclick=()=>nav.classList.add("active");
+      close.onclick=()=>nav.classList.remove("active");
+      nav.querySelectorAll("a").forEach(a=>a.onclick=()=>nav.classList.remove("active"));
+      if(form){
+        form.onsubmit=e=>{
+          e.preventDefault();
+          const q=document.getElementById("searchInput").value.trim();
+          if(q.length<2)return alert("أدخل كلمتين على الأقل للبحث.");
+          alert("نتائج البحث عن: "+q);
+        };
+      }
+    }
+
+    // المنتجات
+    const products=[
+      {name:"طاولة خشبية فاخرة",price:"450 ريال",img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80"},
+      {name:"مصباح مكتبي أنيق",price:"180 ريال",img:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80"},
+      {name:"كنبة بيج مريحة",price:"1200 ريال",img:"https://images.unsplash.com/photo-1616628182504-8b3d96c92dc9?auto=format&fit=crop&w=600&q=80"},
+      {name:"سجادة شرقية فاخرة",price:"700 ريال",img:"https://images.unsplash.com/photo-1616627561517-2a4c7a4a1a7d?auto=format&fit=crop&w=600&q=80"}
+    ];
+    const container=document.getElementById("productList");
+    products.forEach(p=>{
+      const card=document.createElement("div");
+      card.className="card";
+      card.innerHTML=`<img src="${p.img}" alt="${p.name}">
+        <div class="info">
+          <h3>${p.name}</h3>
+          <p>السعر: ${p.price}</p>
+          <button class="btn">أضف إلى السلة</button>
+        </div>`;
+      container.appendChild(card);
+    });
+  </script>
+
+</body>
+</html>
