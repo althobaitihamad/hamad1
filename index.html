@@ -2,89 +2,100 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>المنزل الراقي | متجر المنتجات المنزلية</title>
+  <title>المنزل الراقي | متجر المنتجات المنزلية الفاخرة</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* =========================
-       الأساسيات والتخطيط العام
-    ==========================*/
+    /* الأساسيات */
     html, body {
-      overflow-x: hidden;
       margin: 0;
       padding: 0;
-      font-family: "Noto Naskh Arabic UI", sans-serif;
+      overflow-x: hidden;
       background-color: #f5efe6;
+      font-family: "Noto Naskh Arabic UI", sans-serif;
+      scroll-behavior: smooth;
     }
-
-    body::-webkit-scrollbar {width: 0;background: transparent;}
+    body::-webkit-scrollbar {width: 0;}
     body {scrollbar-width: none;-ms-overflow-style: none;}
 
     main {
       max-width: 1200px;
-      margin: 20px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
     }
 
     h2 {
       color: #8b5e3c;
       margin-bottom: 10px;
+      text-align: center;
+      font-size: 1.6rem;
     }
 
-    /* =========================
-       بنر الفيديو الرئيسي
-    ==========================*/
+    /* بنر الفيديو */
     .hero {
       position: relative;
       width: 100%;
-      height: 80vh;
+      height: 90vh;
       overflow: hidden;
-      border-bottom: 4px solid #8b5e3c;
+      background: #000;
     }
 
     .hero video {
       position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      object-fit: cover;
-      filter: brightness(0.6);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 2;
     }
 
     .hero-content {
       position: absolute;
-      top: 50%; right: 10%;
+      top: 50%;
+      right: 8%;
       transform: translateY(-50%);
-      color: #fff;
-      text-align: right;
-      background: rgba(0,0,0,0.45);
-      padding: 25px;
+      z-index: 3;
+      background: rgba(20, 20, 20, 0.55);
+      padding: 30px 25px;
       border-radius: 12px;
       max-width: 500px;
+      text-align: right;
+      color: #fff;
       animation: fadeIn 1.5s ease forwards;
+      backdrop-filter: blur(5px);
     }
 
     .hero-content h1 {
       font-size: 2rem;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       color: #f5efe6;
     }
 
     .hero-content p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #ddd;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #eee;
+      margin-bottom: 20px;
     }
 
     .hero-content .btn {
-      margin-top: 15px;
-      display: inline-block;
       background: #8b5e3c;
       color: #fff;
-      padding: 10px 18px;
       border: none;
+      padding: 10px 20px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s ease;
     }
 
     .hero-content .btn:hover {
@@ -96,18 +107,23 @@
       to {opacity: 1; transform: translateY(-50%);}
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 768px) {
+      .hero {height: 75vh;}
       .hero-content {
-        right: 5%; left: 5%;
+        right: 5%;
+        left: 5%;
         text-align: center;
+        padding: 20px;
       }
       .hero-content h1 {font-size: 1.6rem;}
       .hero-content p {font-size: 1rem;}
     }
 
-    /* =========================
-       قسم المنتجات
-    ==========================*/
+    /* المنتجات */
+    section#products {
+      margin-top: 60px;
+    }
+
     .products {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -117,29 +133,36 @@
     .card {
       background: #fff;
       border: 1px solid #ddd;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
 
     .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     }
 
     .card img {
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
     }
 
     .card .info {
-      padding: 10px;
+      padding: 15px;
+      text-align: center;
     }
 
     .card .info h3 {
-      margin: 5px 0;
+      margin: 8px 0;
       color: #333;
+      font-size: 1.1rem;
     }
 
     .card .info p {
@@ -147,30 +170,185 @@
       font-size: 0.9rem;
     }
 
-    .btn {
+    .card button {
+      margin-top: 10px;
       background: #8b5e3c;
       color: #fff;
       border: none;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s ease;
     }
 
-    .btn:hover {
+    .card button:hover {
       background: #6f4b30;
     }
 
-    /* =========================
-       تحسين تجاوب الموبايل
-    ==========================*/
-    @media (max-width: 600px) {
-      .card img {height: 180px;}
-      .hero {height: 65vh;}
+    /* قسم المميزات */
+    .features {
+      margin-top: 70px;
+      text-align: center;
+    }
+
+    .features h2 {
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+    }
+
+    .features-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .feature {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px 20px;
+      width: 280px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature span {
+      display: block;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #8b5e3c;
+    }
+
+    .feature h3 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      color: #555;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 700px) {
+      .feature {width: 90%;}
     }
   </style>
 </head>
 <body>
 
-  <!-- استدعاء الهيدر -->
-  <div
+  <!-- استدعاء الشريط العلوي -->
+  <div id="header-placeholder">جارٍ تحميل الشريط العلوي...</div>
+
+  <main>
+    <!-- بنر الفيديو -->
+    <section class="hero" id="home">
+      <video autoplay muted loop playsinline>
+        <source src="./midea/v1000.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+      <div class="hero-content">
+        <h1>المنزل الراقي ✨</h1>
+        <p>اختيارات فاخرة من الديكور والأثاث والإكسسوارات المنزلية تمنح منزلك لمسة من الأناقة والدفء.</p>
+        <button class="btn" onclick="location.href='#products'">تسوق الآن</button>
+      </div>
+    </section>
+
+    <!-- المنتجات -->
+    <section id="products">
+      <h2>أحدث المنتجات</h2>
+      <div class="products" id="productList"></div>
+    </section>
+
+    <!-- المميزات -->
+    <section class="features" id="features">
+      <h2>لماذا تختار المنزل الراقي؟</h2>
+      <div class="features-list">
+        <div class="feature">
+          <span>🏆</span>
+          <h3>جودة عالية</h3>
+          <p>منتجات مختارة بعناية تضمن لك أفضل الخامات وأطول عمر استخدام.</p>
+        </div>
+        <div class="feature">
+          <span>🎨</span>
+          <h3>تصاميم راقية</h3>
+          <p>دمج بين الأناقة العصرية ولمسة الخشب الطبيعية لتناسب كل الأذواق.</p>
+        </div>
+        <div class="feature">
+          <span>💬</span>
+          <h3>خدمة عملاء مميزة</h3>
+          <p>فريقنا مستعد دائمًا لخدمتك ومساعدتك في كل استفساراتك وطلباتك.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- الفوتر -->
+  <div id="footer-placeholder">جارٍ تحميل الفوتر...</div>
+
+  <script>
+    // تحميل الهيدر والفوتر
+    async function includeHTML(id, file) {
+      const el = document.getElementById(id);
+      try {
+        const res = await fetch(file);
+        el.innerHTML = await res.text();
+        if (file.includes('header')) initHeader();
+      } catch {
+        el.innerHTML = "<p>تعذر تحميل " + file + "</p>";
+      }
+    }
+
+    includeHTML("header-placeholder", "./header.html");
+    includeHTML("footer-placeholder", "./footer.html");
+
+    // تفعيل قائمة الجوال
+    function initHeader() {
+      const burger = document.getElementById("burger");
+      const nav = document.getElementById("mobileNav");
+      const close = document.getElementById("closeNav");
+      const form = document.getElementById("searchForm");
+      if (!burger || !nav) return;
+
+      burger.onclick = () => nav.classList.add("active");
+      close.onclick = () => nav.classList.remove("active");
+      nav.querySelectorAll("a").forEach(a => a.onclick = () => nav.classList.remove("active"));
+
+      if (form) {
+        form.onsubmit = e => {
+          e.preventDefault();
+          const q = document.getElementById("searchInput").value.trim();
+          if (q.length < 2) return alert("أدخل كلمتين على الأقل للبحث.");
+          alert("نتائج البحث عن: " + q);
+        };
+      }
+    }
+
+    // المنتجات
+    const products = [
+      { name: "طاولة خشبية فاخرة", price: "450 ريال", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80" },
+      { name: "مصباح مكتبي أنيق", price: "180 ريال", img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80" },
+      { name: "كنبة بيج مريحة", price: "1200 ريال", img: "https://images.unsplash.com/photo-1616628182504-8b3d96c92dc9?auto=format&fit=crop&w=600&q=80" },
+      { name: "سجادة شرقية فاخرة", price: "700 ريال", img: "https://images.unsplash.com/photo-1616627561517-2a4c7a4a1a7d?auto=format&fit=crop&w=600&q=80" }
+    ];
+
+    const container = document.getElementById("productList");
+    products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${p.img}" alt="${p.name}">
+        <div class="info">
+          <h3>${p.name}</h3>
+          <p>السعر: ${p.price}</p>
+          <button onclick="alert('تمت إضافة المنتج إلى السلة')">أضف إلى السلة</button>
+        </div>`;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
