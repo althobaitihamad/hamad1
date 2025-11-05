@@ -2,25 +2,24 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>الحجوزات والتواصل | المنزل الراقي</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
-    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;color:#eae9f0}
-    main{max-width:860px;margin:30px auto;padding:0 16px}
+    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eae9f0;font-family:"Tajawal","Naskh",sans-serif; padding-top:116px}
+    main{max-width:880px;margin:20px auto;padding:0 16px}
     .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
-    h1{margin:8px 0 16px;color:#fff;text-align:center}
+    h1{text-align:center;color:#fff;margin:8px 0 16px}
     form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    input,textarea,select{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0;font-family:inherit}
-    textarea{grid-column:1/-1;min-height:120px}
-    button{background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
-    button:hover{opacity:.9}
-    .msg{margin-top:10px;font-weight:800;text-align:center}
+    input,select,textarea{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0}
+    textarea{grid-column:1 / -1;min-height:130px}
+    button{grid-column:1 / -1;background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;border-radius:12px;padding:12px;font-weight:900;cursor:pointer}
+    .msg{text-align:center;margin-top:10px;font-weight:800}
     @media(max-width:700px){form{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div id="header-placeholder"></div>
+  <div id="header-placeholder">...</div>
 
   <main>
     <div class="box">
@@ -33,17 +32,18 @@
           <option value="">اختر نوع الخدمة</option>
           <option>تصميم داخلي</option>
           <option>تجهيز أثاث</option>
-          <option>استشارة فنية</option>
+          <option>استشارة منزلية</option>
         </select>
         <textarea id="message" placeholder="أضف تفاصيل إضافية"></textarea>
         <button type="submit">إرسال الطلب</button>
       </form>
-      <div class="msg" id="res"></div>
+      <div id="res" class="msg"></div>
     </div>
   </main>
 
-  <div id="footer-placeholder"></div>
+  <div id="footer-placeholder">...</div>
 
+  <!-- Firebase (Module) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -57,36 +57,42 @@
       messagingSenderId:"298973220569",
       appId:"1:298973220569:web:2176ee2ef196a15e4238c8"
     };
-    const app=initializeApp(firebaseConfig);
-    const db=getDatabase(app);
 
-    const form=document.getElementById('bookingForm');
-    const res=document.getElementById('res');
+    const app = initializeApp(firebaseConfig);
+    const db  = getDatabase(app);
 
-    form.addEventListener('submit', async e=>{
+    const form = document.getElementById('bookingForm');
+    const res  = document.getElementById('res');
+
+    form.addEventListener('submit', async (e)=>{
       e.preventDefault();
-      const data={
-        name:form.name.value.trim(),
-        email:form.email.value.trim(),
-        phone:form.phone.value.trim(),
-        service:form.service.value,
-        message:form.message.value.trim(),
-        date:new Date().toLocaleString('ar-SA')
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        service: form.service.value,
+        message: form.message.value.trim(),
+        date: new Date().toLocaleString('ar-SA')
       };
-      if(!data.name||!data.email||!data.phone){res.textContent='يرجى إكمال البيانات';res.style.color='crimson';return;}
+      if(!data.name || !data.email || !data.phone){
+        res.textContent='يرجى إكمال الحقول المطلوبة'; res.style.color='crimson'; return;
+      }
       try{
-        const id=push(ref(db,'bookings'));
-        await set(id,data);
-        res.textContent='✅ تم إرسال الطلب بنجاح';
-        res.style.color='limegreen';form.reset();
-      }catch{res.textContent='⚠️ تعذر الإرسال';res.style.color='crimson'}
+        const id = push(ref(db,'bookings'));
+        await set(id, data);
+        res.textContent='✅ تم الإرسال وحفظ الطلب'; res.style.color='limegreen'; form.reset();
+      }catch(err){
+        console.error(err); res.textContent='⚠️ تعذر الإرسال، حاول لاحقًا'; res.style.color='crimson';
+      }
     });
   </script>
 
   <script>
-    async function includeHTML(id,file){const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML="<p>تعذر تحميل "+file+"</p>";}}
-    includeHTML("header-placeholder","./header.html");
-    includeHTML("footer-placeholder","./footer.html");
+    (async function(){
+      const inc=async(id,file)=>{const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML='<p>تعذر تحميل '+file+'</p>';}}
+      await inc('header-placeholder','./header.html');
+      await inc('footer-placeholder','./footer.html');
+    })();
   </script>
 </body>
 </html>

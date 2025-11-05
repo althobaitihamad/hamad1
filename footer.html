@@ -1,46 +1,18 @@
 <footer id="lux-footer" dir="rtl" lang="ar">
   <style>
-    :root{--bg1:#0c0c0f;--bg2:#131318;--gold:#d1aa6e}
-    #lux-footer{font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;margin-top:40px;background:linear-gradient(90deg,var(--bg2),var(--bg1));border-top:1px solid #1e1e26;color:#ccc}
-    .fx-top{padding:30px 16px}
-    .fx-grid{max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px}
-    .fx-grid h4{margin:0 0 10px;color:var(--gold)}
-    .fx-grid a{display:block;color:#bfbec6;text-decoration:none;padding:6px 0}
-    .fx-grid a:hover{color:#fff}
-    .fx-bottom{text-align:center;padding:12px;background:#0b0b10;border-top:1px solid #20202a}
-    .fx-bottom small{display:block;font-size:13px;color:#888;margin-top:4px}
+    :root{--bg1:#0c0c0f; --bg2:#131318; --gold:#d1aa6e}
+    #lux-footer{font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif; background:linear-gradient(180deg,var(--bg1),var(--bg2)); color:#ddd; border-top:1px solid #232331; margin-top:60px}
+    .fx{max-width:1200px;margin:auto;padding:24px 16px;text-align:center}
+    .fx p{margin:6px 0}
+    .fx span{color:var(--gold);font-weight:900}
+    .small{color:#999;font-size:.9rem}
   </style>
-
-  <div class="fx-top">
-    <div class="fx-grid">
-      <div>
-        <h4>روابط سريعة</h4>
-        <a href="./index.html#home">الرئيسية</a>
-        <a href="./index.html#products">المنتجات</a>
-        <a href="./bookings.html">الحجوزات</a>
-      </div>
-      <div>
-        <h4>خدمة العملاء</h4>
-        <a href="./contact.html">اتصل بنا</a>
-        <a href="./index.html#features">لماذا نحن</a>
-      </div>
-      <div>
-        <h4>عن المنزل الراقي</h4>
-        <a href="#">من نحن</a>
-        <a href="#">سياسة الخصوصية</a>
-      </div>
-    </div>
+  <div class="fx">
+    <p>© <span>المنزل الراقي</span> — تصميم: <span>حمد الثبيتي</span></p>
+    <p class="small">آخر تحديث: <span id="lux-date"></span></p>
   </div>
-
-  <div class="fx-bottom">
-    © <span id="lux-year"></span> المنزل الراقي — تصميم: حمد الثبيتي
-    <small>آخر تحديث: <span id="lux-date"></span></small>
-  </div>
-
   <script>
     const now=new Date();
-    const fmt=new Intl.DateTimeFormat('ar-SA',{year:'numeric',month:'long',day:'numeric'});
-    lux-year.textContent=now.getFullYear();
-    lux-date.textContent=fmt.format(now);
+    document.getElementById('lux-date').textContent = new Intl.DateTimeFormat('ar-SA',{year:'numeric',month:'long',day:'numeric'}).format(now);
   </script>
 </footer>
