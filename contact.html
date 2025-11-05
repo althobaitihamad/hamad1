@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>اتصل بنا | المنزل الراقي</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{margin:0;background:#f5efe6;font-family:"Noto Naskh Arabic UI",sans-serif}
-main{max-width:900px;margin:40px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-h2{text-align:center;color:#8b5e3c}
-.contact-info{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-top:20px}
-.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:20px;width:260px;text-align:center;transition:0.3s}
-.card:hover{box-shadow:0 4px 12px rgba(0,0,0,0.1);transform:translateY(-4px)}
-.card span{font-size:2rem;color:#8b5e3c}
-</style>
+  <meta charset="UTF-8">
+  <title>اتصل بنا | المنزل الراقي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
+    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;color:#eae9f0}
+    main{max-width:900px;margin:30px auto;padding:0 16px}
+    .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
+    h1{margin:8px 0 16px;color:#fff;text-align:center}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    input,textarea,select{
+      padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0;font-family:inherit
+    }
+    textarea{grid-column:1/-1;min-height:120px}
+    button{
+      background:linear-gradient(180deg,var(--gold),#b98c4f);
+      color:#111;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer
+    }
+    button:hover{opacity:.9}
+    @media(max-width:700px){form{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-<div id="header-placeholder"></div>
+  <div id="header-placeholder"></div>
 
-<main>
-  <h2>اتصل بنا</h2>
-  <div class="contact-info">
-    <div class="card"><span>📞</span><p>+966 50 000 0000</p></div>
-    <div class="card"><span>📧</span><p>hello@eleganthome.sa</p></div>
-    <div class="card"><span>📍</span><p>جدة - المملكة العربية السعودية</p></div>
-  </div>
-</main>
+  <main>
+    <div class="box">
+      <h1>📞 اتصل بنا</h1>
+      <form onsubmit="event.preventDefault();alert('تم إرسال الرسالة بنجاح ✅');this.reset();">
+        <input type="text" placeholder="الاسم الكامل" required>
+        <input type="email" placeholder="البريد الإلكتروني" required>
+        <input type="tel" placeholder="رقم الجوال" required>
+        <select required>
+          <option value="">اختر الموضوع</option>
+          <option>استفسار</option>
+          <option>مشكلة</option>
+          <option>طلب خاص</option>
+        </select>
+        <textarea placeholder="اكتب رسالتك هنا..." required></textarea>
+        <button type="submit">إرسال</button>
+      </form>
+    </div>
+  </main>
 
-<div id="footer-placeholder"></div>
+  <div id="footer-placeholder"></div>
 
-<script>
-async function includeHTML(id,file){
-  const el=document.getElementById(id);
-  const res=await fetch(file);
-  el.innerHTML=await res.text();
-  if(file.includes('header')) initHeader();
-}
-includeHTML("header-placeholder","./header.html");
-includeHTML("footer-placeholder","./footer.html");
-
-function initHeader(){
-  const burger=document.getElementById("burger");
-  const nav=document.getElementById("mobileNav");
-  const close=document.getElementById("closeNav");
-  if(!burger||!nav)return;
-  burger.onclick=()=>nav.classList.add("active");
-  close.onclick=()=>nav.classList.remove("active");
-  nav.querySelectorAll("a").forEach(a=>a.onclick=()=>nav.classList.remove("active"));
-}
-</script>
+  <script>
+    async function includeHTML(id,file){const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML="<p>تعذر تحميل "+file+"</p>";}}
+    includeHTML("header-placeholder","./header.html");
+    includeHTML("footer-placeholder","./footer.html");
+  </script>
 </body>
 </html>

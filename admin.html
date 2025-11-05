@@ -3,204 +3,86 @@
 <head>
   <meta charset="UTF-8">
   <title>لوحة التحكم | المنزل الراقي</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: "Noto Naskh Arabic UI", sans-serif;
-      background: #f5efe6;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-
-    main {
-      max-width: 900px;
-      margin: 50px auto;
-      background: #fff;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #8b5e3c;
-      margin-bottom: 30px;
-    }
-
-    #login-box, #admin-panel {
-      display: none;
-    }
-
-    input, button {
-      font-family: inherit;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    input:focus {
-      border-color: #8b5e3c;
-      outline: none;
-    }
-
-    button {
-      background: #8b5e3c;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #6f4b30;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-
-    th {
-      background: #8b5e3c;
-      color: #fff;
-    }
-
-    #logout {
-      float: left;
-      background: #b23b3b;
-      margin-top: -20px;
-    }
-
-    .center {
-      text-align: center;
-      margin-top: 20px;
-    }
+    :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
+    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;color:#eae9f0}
+    main{max-width:1060px;margin:34px auto;padding:0 16px}
+    .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
+    h1{margin:8px 0 16px;color:#fff;text-align:center}
+    input,button{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0;font-family:inherit;width:100%}
+    button{background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;font-weight:900;cursor:pointer}
+    table{width:100%;border-collapse:collapse;margin-top:16px;font-size:15px}
+    th,td{border:1px solid #232331;padding:10px;text-align:center}
+    th{background:#11121a;color:#fff}
+    #login-box,#panel{text-align:center}
+    #panel{display:none}
   </style>
 </head>
 <body>
-
   <main>
-    <h1>📋 لوحة تحكم الحجوزات</h1>
-
-    <!-- تسجيل الدخول -->
-    <div id="login-box">
-      <div class="center">
-        <p>يرجى تسجيل الدخول كمسؤول للوصول إلى لوحة التحكم</p>
-        <input type="email" id="adminEmail" placeholder="البريد الإلكتروني"><br><br>
-        <input type="password" id="adminPass" placeholder="كلمة المرور"><br><br>
+    <div class="box">
+      <h1>📋 لوحة تحكم الحجوزات</h1>
+      <div id="login-box">
+        <input id="adminEmail" type="email" placeholder="البريد الإلكتروني"><br><br>
+        <input id="adminPass" type="password" placeholder="كلمة المرور"><br><br>
         <button id="loginBtn">تسجيل الدخول</button>
-        <p id="loginMsg"></p>
+        <div id="loginMsg" style="margin-top:8px;font-weight:bold"></div>
       </div>
-    </div>
-
-    <!-- لوحة الإدارة -->
-    <div id="admin-panel">
-      <button id="logout">🚪 تسجيل الخروج</button>
-      <h2>قائمة الحجوزات</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>الاسم</th>
-            <th>البريد الإلكتروني</th>
-            <th>رقم الجوال</th>
-            <th>الخدمة</th>
-            <th>الرسالة</th>
-            <th>التاريخ</th>
-          </tr>
-        </thead>
-        <tbody id="bookingsTable"></tbody>
-      </table>
+      <div id="panel">
+        <button id="logout">تسجيل الخروج</button>
+        <table>
+          <thead><tr><th>الاسم</th><th>البريد</th><th>الجوال</th><th>الخدمة</th><th>الرسالة</th><th>التاريخ</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
     </div>
   </main>
 
-  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
-      authDomain: "eleganthome-bookings.firebaseapp.com",
-      databaseURL: "https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "eleganthome-bookings",
-      storageBucket: "eleganthome-bookings.firebasestorage.app",
-      messagingSenderId: "298973220569",
-      appId: "1:298973220569:web:2176ee2ef196a15e4238c8"
+    const config={
+      apiKey:"AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
+      authDomain:"eleganthome-bookings.firebaseapp.com",
+      databaseURL:"https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId:"eleganthome-bookings",
+      storageBucket:"eleganthome-bookings.firebasestorage.app",
+      messagingSenderId:"298973220569",
+      appId:"1:298973220569:web:2176ee2ef196a15e4238c8"
     };
+    const app=initializeApp(config);
+    const auth=getAuth(app);
+    const db=getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+    const loginBox=document.getElementById('login-box');
+    const panel=document.getElementById('panel');
+    const msg=document.getElementById('loginMsg');
+    const rows=document.getElementById('rows');
 
-    const loginBox = document.getElementById("login-box");
-    const adminPanel = document.getElementById("admin-panel");
-    const loginMsg = document.getElementById("loginMsg");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logout");
-    const bookingsTable = document.getElementById("bookingsTable");
+    document.getElementById('loginBtn').onclick=async()=>{
+      try{
+        await signInWithEmailAndPassword(auth,adminEmail.value,adminPass.value);
+        msg.textContent='✅ تم تسجيل الدخول';
+        msg.style.color='limegreen';
+      }catch{msg.textContent='❌ فشل تسجيل الدخول';msg.style.color='crimson'}
+    };
+    document.getElementById('logout').onclick=()=>signOut(auth);
 
-    // تسجيل الدخول
-    loginBtn.addEventListener("click", async () => {
-      const email = document.getElementById("adminEmail").value;
-      const password = document.getElementById("adminPass").value;
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        loginMsg.textContent = "تم تسجيل الدخول بنجاح ✅";
-        loginMsg.style.color = "green";
-      } catch (error) {
-        loginMsg.textContent = "❌ فشل تسجيل الدخول، تحقق من البيانات.";
-        loginMsg.style.color = "red";
-      }
-    });
-
-    // متابعة حالة المستخدم
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loginBox.style.display = "none";
-        adminPanel.style.display = "block";
-
-        const bookingsRef = ref(db, "bookings");
-        onValue(bookingsRef, (snapshot) => {
-          bookingsTable.innerHTML = "";
-          snapshot.forEach((childSnapshot) => {
-            const b = childSnapshot.val();
-            const row = `
-              <tr>
-                <td>${b.name}</td>
-                <td>${b.email}</td>
-                <td>${b.phone}</td>
-                <td>${b.service}</td>
-                <td>${b.message || "-"}</td>
-                <td>${b.date}</td>
-              </tr>
-            `;
-            bookingsTable.innerHTML += row;
+    onAuthStateChanged(auth,u=>{
+      if(u){
+        loginBox.style.display='none';panel.style.display='block';
+        onValue(ref(db,'bookings'),snap=>{
+          rows.innerHTML='';
+          snap.forEach(ch=>{
+            const b=ch.val();
+            rows.innerHTML+=`<tr><td>${b.name||''}</td><td>${b.email||''}</td><td>${b.phone||''}</td><td>${b.service||''}</td><td>${b.message||''}</td><td>${b.date||''}</td></tr>`;
           });
         });
-
-      } else {
-        loginBox.style.display = "block";
-        adminPanel.style.display = "none";
-      }
-    });
-
-    // تسجيل الخروج
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth);
+      }else{panel.style.display='none';loginBox.style.display='block';}
     });
   </script>
-
 </body>
 </html>

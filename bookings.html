@@ -2,177 +2,91 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الحجوزات والتواصل | المنزل الراقي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body {
-      font-family: "Noto Naskh Arabic UI", sans-serif;
-      background-color: #f5efe6;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-
-    main {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      color: #8b5e3c;
-      margin-bottom: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    input, textarea, select, button {
-      font-family: inherit;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: #8b5e3c;
-      outline: none;
-      box-shadow: 0 0 5px rgba(139, 94, 60, 0.3);
-    }
-
-    button {
-      background-color: #8b5e3c;
-      color: #fff;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background-color: #6f4b30;
-    }
-
-    .message {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
+    :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
+    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;color:#eae9f0}
+    main{max-width:860px;margin:30px auto;padding:0 16px}
+    .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
+    h1{margin:8px 0 16px;color:#fff;text-align:center}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    input,textarea,select{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0;font-family:inherit}
+    textarea{grid-column:1/-1;min-height:120px}
+    button{background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;padding:12px;border-radius:12px;font-weight:900;cursor:pointer}
+    button:hover{opacity:.9}
+    .msg{margin-top:10px;font-weight:800;text-align:center}
+    @media(max-width:700px){form{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-
   <div id="header-placeholder"></div>
 
   <main>
-    <h1>نموذج الحجز والتواصل</h1>
-    <form id="bookingForm">
-      <input type="text" id="name" placeholder="الاسم الكامل" required>
-      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-      <input type="tel" id="phone" placeholder="رقم الجوال" required>
-      <select id="service" required>
-        <option value="">اختر نوع الخدمة</option>
-        <option value="تصميم داخلي">تصميم داخلي</option>
-        <option value="تجهيز أثاث">تجهيز أثاث</option>
-        <option value="استشارة">استشارة</option>
-      </select>
-      <textarea id="message" rows="4" placeholder="اكتب ملاحظاتك أو تفاصيل إضافية"></textarea>
-      <button type="submit">إرسال الحجز</button>
-    </form>
-    <div class="message" id="responseMsg"></div>
+    <div class="box">
+      <h1>📅 طلب حجز / تواصل</h1>
+      <form id="bookingForm">
+        <input id="name" type="text" placeholder="الاسم الكامل" required>
+        <input id="email" type="email" placeholder="البريد الإلكتروني" required>
+        <input id="phone" type="tel" placeholder="رقم الجوال" required>
+        <select id="service" required>
+          <option value="">اختر نوع الخدمة</option>
+          <option>تصميم داخلي</option>
+          <option>تجهيز أثاث</option>
+          <option>استشارة فنية</option>
+        </select>
+        <textarea id="message" placeholder="أضف تفاصيل إضافية"></textarea>
+        <button type="submit">إرسال الطلب</button>
+      </form>
+      <div class="msg" id="res"></div>
+    </div>
   </main>
 
   <div id="footer-placeholder"></div>
 
-  <!-- Firebase SDK -->
   <script type="module">
-    // استيراد Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // إعدادات الاتصال بمشروعك
     const firebaseConfig = {
-      apiKey: "AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
-      authDomain: "eleganthome-bookings.firebaseapp.com",
-      databaseURL: "https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "eleganthome-bookings",
-      storageBucket: "eleganthome-bookings.firebasestorage.app",
-      messagingSenderId: "298973220569",
-      appId: "1:298973220569:web:2176ee2ef196a15e4238c8"
+      apiKey:"AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
+      authDomain:"eleganthome-bookings.firebaseapp.com",
+      databaseURL:"https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId:"eleganthome-bookings",
+      storageBucket:"eleganthome-bookings.firebasestorage.app",
+      messagingSenderId:"298973220569",
+      appId:"1:298973220569:web:2176ee2ef196a15e4238c8"
     };
+    const app=initializeApp(firebaseConfig);
+    const db=getDatabase(app);
 
-    // تهيئة Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    const form=document.getElementById('bookingForm');
+    const res=document.getElementById('res');
 
-    // حدث الإرسال
-    const form = document.getElementById("bookingForm");
-    const msg = document.getElementById("responseMsg");
-
-    form.addEventListener("submit", (e) => {
+    form.addEventListener('submit', async e=>{
       e.preventDefault();
-
-      const name = form.name.value.trim();
-      const email = form.email.value.trim();
-      const phone = form.phone.value.trim();
-      const service = form.service.value.trim();
-      const message = form.message.value.trim();
-
-      if (!name || !email || !phone) {
-        msg.textContent = "يرجى تعبئة جميع الحقول المطلوبة.";
-        msg.style.color = "red";
-        return;
-      }
-
-      const bookingsRef = ref(db, "bookings");
-      const newBooking = push(bookingsRef);
-
-      set(newBooking, {
-        name,
-        email,
-        phone,
-        service,
-        message,
-        date: new Date().toLocaleString()
-      })
-      .then(() => {
-        msg.textContent = "✅ تم إرسال الحجز بنجاح!";
-        msg.style.color = "green";
-        form.reset();
-      })
-      .catch((error) => {
-        console.error(error);
-        msg.textContent = "حدث خطأ أثناء الإرسال. حاول مرة أخرى.";
-        msg.style.color = "red";
-      });
+      const data={
+        name:form.name.value.trim(),
+        email:form.email.value.trim(),
+        phone:form.phone.value.trim(),
+        service:form.service.value,
+        message:form.message.value.trim(),
+        date:new Date().toLocaleString('ar-SA')
+      };
+      if(!data.name||!data.email||!data.phone){res.textContent='يرجى إكمال البيانات';res.style.color='crimson';return;}
+      try{
+        const id=push(ref(db,'bookings'));
+        await set(id,data);
+        res.textContent='✅ تم إرسال الطلب بنجاح';
+        res.style.color='limegreen';form.reset();
+      }catch{res.textContent='⚠️ تعذر الإرسال';res.style.color='crimson'}
     });
-
   </script>
 
-  <!-- تحميل الهيدر والفوتر -->
   <script>
-    async function includeHTML(id, file) {
-      const el = document.getElementById(id);
-      try {
-        const res = await fetch(file);
-        const txt = await res.text();
-        el.innerHTML = txt;
-      } catch (e) {
-        el.innerHTML = "<p>تعذر تحميل " + file + "</p>";
-      }
-    }
-    includeHTML("header-placeholder", "./header.html");
-    includeHTML("footer-placeholder", "./footer.html");
+    async function includeHTML(id,file){const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML="<p>تعذر تحميل "+file+"</p>";}}
+    includeHTML("header-placeholder","./header.html");
+    includeHTML("footer-placeholder","./footer.html");
   </script>
-
 </body>
 </html>

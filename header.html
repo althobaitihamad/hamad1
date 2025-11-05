@@ -1,123 +1,98 @@
-<header class="site-header" dir="rtl" lang="ar">
+<header id="lux-header" dir="rtl" lang="ar">
   <style>
-    :root {
-      --wood:#8b5e3c; --wood2:#6f4b30;
-      --dark1:#121212; --dark2:#1e1e1e; --beige:#f5efe6;
+    :root{
+      --bg1:#0c0c0f;--bg2:#131318;
+      --gold:#d1aa6e;--gold2:#b98c4f;
+      --muted:#bdbcc3;
     }
-    .site-header {
-      background: linear-gradient(135deg,var(--dark1),var(--dark2));
-      color: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 2px solid var(--wood);
-      font-family: "Noto Naskh Arabic UI", sans-serif;
+    #lux-header{font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif;position:sticky;top:0;z-index:1000}
+    .hx-top{
+      background:linear-gradient(90deg,var(--bg1),var(--bg2));
+      color:#fff;display:flex;align-items:center;gap:12px;
+      padding:10px 16px;border-bottom:1px solid #1e1e26;
     }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .hx-burger{display:none;background:#17171f;color:#fff;border:1px solid #2a2a36;width:42px;height:40px;border-radius:10px;font-size:22px;cursor:pointer}
+    .hx-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:900}
+    .hx-logo img{width:48px;height:48px;border-radius:50%;border:2px solid var(--gold);object-fit:cover}
+    .hx-logo span{color:var(--gold)}
+    .hx-search{flex:1;display:flex;gap:6px;margin:0 10px}
+    .hx-search input{flex:1;padding:8px 10px;border-radius:8px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0}
+    .hx-search button{background:linear-gradient(180deg,var(--gold),var(--gold2));color:#111;font-weight:900;border:none;padding:8px 14px;border-radius:8px;cursor:pointer}
+    .hx-actions{display:flex;gap:12px;align-items:center}
+    .hx-actions a{color:#fff;text-decoration:none;font-weight:700}
+    .hx-sub{background:#0f0f14;display:flex;gap:10px;overflow-x:auto;padding:8px 16px}
+    .hx-sub a{color:#ddd;text-decoration:none;padding:8px 12px;border-radius:8px;background:#19191f;font-weight:700;white-space:nowrap}
+    .hx-sub a:hover{background:#252530}
+
+    /* القائمة الجانبية للجوال */
+    .hx-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(3px);opacity:0;visibility:hidden;transition:.3s;z-index:1090}
+    .hx-backdrop.active{opacity:1;visibility:visible}
+    .hx-drawer{position:fixed;top:0;right:-85%;width:80%;max-width:360px;height:100vh;background:rgba(18,18,25,0.95);backdrop-filter:blur(10px);border-left:1px solid #2a2a36;transition:right .35s ease;z-index:1100;display:flex;flex-direction:column}
+    .hx-drawer.active{right:0}
+    .hx-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #2a2a36;color:#fff}
+    .hx-drawer-head img{width:42px;height:42px;border-radius:50%;border:2px solid var(--gold)}
+    .hx-close{background:#17171f;border:1px solid #2a2a36;color:#fff;width:36px;height:36px;border-radius:10px;cursor:pointer}
+    .hx-drawer nav a{display:block;padding:14px 18px;color:#fff;text-decoration:none;border-bottom:1px solid #232331;font-weight:700}
+    .hx-drawer nav a:hover{background:#1b1b23}
+
+    @media(max-width:950px){
+      .hx-burger{display:flex}
+      .hx-actions .hide-md{display:none}
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: #fff;
-      font-weight: bold;
-      font-size: 1.3rem;
-    }
-    .logo img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--wood);
-      box-shadow: 0 0 8px rgba(139,94,60,.4);
-      transition: .3s;
-    }
-    .logo img:hover {transform: scale(1.08);}
-    .logo span {color: var(--wood); font-weight: 900;}
-    nav {display: flex; gap: 15px; align-items: center;}
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
-    nav a:hover {background-color: var(--wood);}
-    .search {display: flex; gap: 6px; align-items: center;}
-    input[type=search] {
-      padding: 6px 10px; border: none; border-radius: 6px;
-      background: var(--beige); color: #333; width: 180px;
-    }
-    input[type=search]::placeholder {color: var(--wood);}
-    button {
-      background: var(--wood); border: none; color: #fff;
-      padding: 6px 12px; border-radius: 6px; cursor: pointer;
-      font-weight: 600; transition: 0.3s;
-    }
-    button:hover {background: var(--wood2);}
-    .burger {
-      display: none; flex-direction: column; justify-content: center;
-      cursor: pointer; width: 28px; height: 22px; gap: 5px;
-    }
-    .burger span {
-      height: 3px; width: 100%; background: #fff; border-radius: 3px;
-    }
-    .mobile-nav {
-      position: fixed; top: 0; right: -260px; width: 240px; height: 100vh;
-      background: linear-gradient(135deg,var(--dark1),var(--dark2));
-      color: #fff; padding: 20px;
-      display: flex; flex-direction: column; gap: 12px;
-      border-left: 2px solid var(--wood);
-      transition: right .4s ease; z-index: 2000;
-    }
-    .mobile-nav a {
-      color: #fff; text-decoration: none; font-size: 1rem;
-      font-weight: 600; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.1);
-    }
-    .mobile-nav a:hover {color: var(--wood);}
-    .mobile-nav.active {right: 0;}
-    .close-btn {align-self: flex-end; font-size: 1.5rem; cursor: pointer; color: var(--wood);}
-    @media(max-width:900px){nav,.search{display:none}.burger{display:flex}}
   </style>
 
-  <div class="container">
-    <a href="./index.html#home" class="logo">
-      <img src="./midea/h1000.jpeg" alt="شعار المنزل الراقي">
+  <div class="hx-top">
+    <button id="hx-burger" class="hx-burger">☰</button>
+    <a href="./index.html" class="hx-logo">
+      <img src="./midea/h1000.jpeg" alt="شعار">
       <span>المنزل الراقي</span>
     </a>
-
-    <nav>
-      <a href="./index.html#home">الرئيسية</a>
-      <a href="./index.html#products">المنتجات</a>
-      <a href="./index.html#offers">العروض</a>
-      <a href="./index.html#features">لماذا نحن</a>
-      <a href="./bookings.html">الحجوزات والتواصل</a>
-      <a href="./contact.html">اتصل بنا</a>
-    </nav>
-
-    <form class="search" id="searchForm">
-      <input type="search" id="searchInput" placeholder="ابحث عن منتج...">
+    <form class="hx-search" id="hx-search-form">
+      <input id="hx-q" type="search" placeholder="ابحث عن منتج...">
       <button type="submit">بحث</button>
     </form>
-
-    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+    <div class="hx-actions">
+      <a href="./bookings.html" class="hide-md">الحجوزات</a>
+      <a href="./contact.html" class="hide-md">تواصل</a>
+      <a href="#">🛒</a>
+    </div>
   </div>
 
-  <div class="mobile-nav" id="mobileNav">
-    <div class="close-btn" id="closeNav">✖</div>
-    <a href="./index.html#home">🏠 الرئيسية</a>
-    <a href="./index.html#products">🛋 المنتجات</a>
-    <a href="./index.html#offers">💎 العروض</a>
-    <a href="./index.html#features">⭐ لماذا نحن</a>
-    <a href="./bookings.html">📅 الحجوزات والتواصل</a>
-    <a href="./contact.html">📞 اتصل بنا</a>
+  <div class="hx-sub">
+    <a href="./index.html#home">الرئيسية</a>
+    <a href="./index.html#products">المنتجات</a>
+    <a href="./index.html#offers">العروض</a>
+    <a href="./index.html#features">لماذا نحن</a>
   </div>
+
+  <div id="hx-backdrop" class="hx-backdrop"></div>
+  <aside id="hx-drawer" class="hx-drawer">
+    <div class="hx-drawer-head">
+      <div><img src="./midea/h1000.jpeg"><strong>القائمة</strong></div>
+      <button id="hx-close" class="hx-close">✕</button>
+    </div>
+    <nav>
+      <a href="./index.html">🏠 الرئيسية</a>
+      <a href="./index.html#products">🛋 المنتجات</a>
+      <a href="./bookings.html">📅 الحجوزات</a>
+      <a href="./contact.html">📞 تواصل معنا</a>
+    </nav>
+  </aside>
+
+  <script>
+    const burger=document.getElementById('hx-burger');
+    const drawer=document.getElementById('hx-drawer');
+    const closeBtn=document.getElementById('hx-close');
+    const backdrop=document.getElementById('hx-backdrop');
+    const open=()=>{drawer.classList.add('active');backdrop.classList.add('active');document.body.style.overflow='hidden'}
+    const close=()=>{drawer.classList.remove('active');backdrop.classList.remove('active');document.body.style.overflow=''}
+    burger.onclick=open;closeBtn.onclick=close;backdrop.onclick=close;
+    window.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+    document.getElementById('hx-search-form').addEventListener('submit',e=>{
+      e.preventDefault();
+      const q=document.getElementById('hx-q').value.trim();
+      if(q.length<2)return alert("أدخل كلمتين على الأقل");
+      alert("نتائج البحث عن: "+q);
+    });
+  </script>
 </header>
