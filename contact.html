@@ -1,59 +1,129 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>اتصل بنا | المنزل الراقي</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>تواصل معنا | المنزل الراقي</title>
   <style>
-    :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
-    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eae9f0;font-family:"Tajawal","Naskh",sans-serif; padding-top:116px}
-    main{max-width:900px;margin:20px auto;padding:0 16px}
-    .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
-    h1{text-align:center;color:#fff;margin:8px 0 16px}
-    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    input,select,textarea{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0}
-    textarea{grid-column:1 / -1;min-height:130px}
-    button{grid-column:1 / -1;background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;border-radius:12px;padding:12px;font-weight:900;cursor:pointer}
-    @media(max-width:700px){form{grid-template-columns:1fr}}
+    body {
+      margin: 0;
+      font-family: "Tajawal", sans-serif;
+      background: #0c0c0f;
+      color: #fff;
+      padding-top: 120px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #16161c;
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid #2a2a36;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d1aa6e;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #0f0f14;
+      color: #fff;
+      resize: none;
+    }
+
+    button {
+      background: linear-gradient(180deg, #d1aa6e, #b98c4f);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.2);
+    }
+
+    @media (max-width: 600px) {
+      main { margin: 10px; padding: 20px; }
+    }
   </style>
 </head>
+
 <body>
-  <div id="header-placeholder">...</div>
+  <div id="header-placeholder"></div>
 
   <main>
-    <div class="box">
-      <h1>📞 اتصل بنا</h1>
-      <form id="contactForm">
-        <input id="name" type="text" placeholder="الاسم الكامل" required>
-        <input id="email" type="email" placeholder="البريد الإلكتروني" required>
-        <input id="phone" type="tel" placeholder="رقم الجوال" required>
-        <select id="topic" required>
-          <option value="">اختر الموضوع</option>
-          <option>استفسار عام</option>
-          <option>مشكلة في الطلب</option>
-          <option>اقتراح أو ملاحظة</option>
-        </select>
-        <textarea id="message" placeholder="اكتب رسالتك..." required></textarea>
-        <button type="submit">إرسال</button>
-      </form>
-      <p id="msg" style="text-align:center;margin-top:10px;font-weight:800"></p>
-    </div>
+    <h1>📞 تواصل معنا</h1>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="الاسم الكامل" required />
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required />
+      <textarea id="message" rows="4" placeholder="اكتب رسالتك هنا..." required></textarea>
+      <button type="submit">إرسال</button>
+    </form>
+    <p id="statusMsg" style="text-align:center;margin-top:10px;color:#d1aa6e;"></p>
   </main>
 
-  <div id="footer-placeholder">...</div>
+  <div id="footer-placeholder"></div>
 
-  <script>
-    (async function(){
-      const inc=async(id,file)=>{const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML='<p>تعذر تحميل '+file+'</p>';}}
-      await inc('header-placeholder','./header.html');
-      await inc('footer-placeholder','./footer.html');
-    })();
-    document.getElementById('contactForm').addEventListener('submit',e=>{
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
+      authDomain: "eleganthome-bookings.firebaseapp.com",
+      databaseURL: "https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "eleganthome-bookings",
+      storageBucket: "eleganthome-bookings.firebasestorage.app",
+      messagingSenderId: "298973220569",
+      appId: "1:298973220569:web:2176ee2ef196a15e4238c8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById("contactForm").addEventListener("submit", async e => {
       e.preventDefault();
-      const msg=document.getElementById('msg');
-      msg.textContent='تم إرسال رسالتك بنجاح ✅'; msg.style.color='limegreen';
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!name || !email || !message) return alert("الرجاء تعبئة جميع الحقول");
+
+      const msgRef = push(ref(db, "messages"));
+      await set(msgRef, { name, email, message, date: new Date().toLocaleString() });
+      document.getElementById("statusMsg").textContent = "✅ تم إرسال الرسالة بنجاح!";
       e.target.reset();
     });
+  </script>
+
+  <script>
+    (async()=>{
+      const inc=async(id,file)=>{const el=document.getElementById(id);const r=await fetch(file);el.innerHTML=await r.text();}
+      await inc("header-placeholder","./header.html");
+      await inc("footer-placeholder","./footer.html");
+    })();
+  </script>
+
+  <script>
+    setTimeout(()=>{
+      const b=document.getElementById('hx-burger'),d=document.getElementById('hx-drawer'),c=document.getElementById('hx-close'),bg=document.getElementById('hx-backdrop');
+      if(!b||!d)return;const open=()=>{d.classList.add('active');bg.classList.add('active');document.body.style.overflow='hidden';}
+      const close=()=>{d.classList.remove('active');bg.classList.remove('active');document.body.style.overflow='';}
+      b.onclick=open;c.onclick=close;bg.onclick=close;
+    },800);
   </script>
 </body>
 </html>

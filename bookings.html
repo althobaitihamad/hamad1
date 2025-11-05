@@ -1,98 +1,124 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>الحجوزات والتواصل | المنزل الراقي</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>الحجوزات | المنزل الراقي</title>
   <style>
-    :root{--bg1:#0c0c0f;--bg2:#131318;--card:#191a21;--gold:#d1aa6e}
-    body{margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:#eae9f0;font-family:"Tajawal","Naskh",sans-serif; padding-top:116px}
-    main{max-width:880px;margin:20px auto;padding:0 16px}
-    .box{background:linear-gradient(180deg,#17171e,#14141a);border:1px solid #232331;border-radius:16px;padding:22px}
-    h1{text-align:center;color:#fff;margin:8px 0 16px}
-    form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    input,select,textarea{padding:12px;border-radius:12px;border:1px solid #2a2a36;background:#0f0f14;color:#eae9f0}
-    textarea{grid-column:1 / -1;min-height:130px}
-    button{grid-column:1 / -1;background:linear-gradient(180deg,var(--gold),#b98c4f);color:#111;border:none;border-radius:12px;padding:12px;font-weight:900;cursor:pointer}
-    .msg{text-align:center;margin-top:10px;font-weight:800}
-    @media(max-width:700px){form{grid-template-columns:1fr}}
+    body {
+      margin: 0;
+      font-family: "Tajawal", sans-serif;
+      background: #0c0c0f;
+      color: #fff;
+      padding-top: 120px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #16161c;
+      padding: 30px;
+      border-radius: 12px;
+      border: 1px solid #2a2a36;
+    }
+
+    h1 {
+      text-align: center;
+      color: #d1aa6e;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, select {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #0f0f14;
+      color: #fff;
+    }
+
+    button {
+      background: linear-gradient(180deg, #d1aa6e, #b98c4f);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
   </style>
 </head>
+
 <body>
-  <div id="header-placeholder">...</div>
+  <div id="header-placeholder"></div>
 
   <main>
-    <div class="box">
-      <h1>📅 طلب حجز / تواصل</h1>
-      <form id="bookingForm">
-        <input id="name" type="text" placeholder="الاسم الكامل" required>
-        <input id="email" type="email" placeholder="البريد الإلكتروني" required>
-        <input id="phone" type="tel" placeholder="رقم الجوال" required>
-        <select id="service" required>
-          <option value="">اختر نوع الخدمة</option>
-          <option>تصميم داخلي</option>
-          <option>تجهيز أثاث</option>
-          <option>استشارة منزلية</option>
-        </select>
-        <textarea id="message" placeholder="أضف تفاصيل إضافية"></textarea>
-        <button type="submit">إرسال الطلب</button>
-      </form>
-      <div id="res" class="msg"></div>
-    </div>
+    <h1>📅 حجز منتج</h1>
+    <form id="bookingForm">
+      <input type="text" id="customerName" placeholder="الاسم الكامل" required />
+      <input type="tel" id="phone" placeholder="رقم الجوال" required />
+      <select id="product">
+        <option value="طاولة خشبية">طاولة خشبية</option>
+        <option value="كنبة بيج">كنبة بيج</option>
+        <option value="مصباح مكتبي">مصباح مكتبي</option>
+      </select>
+      <button type="submit">إرسال الحجز</button>
+    </form>
+    <p id="statusMsg" style="text-align:center;margin-top:10px;color:#d1aa6e;"></p>
   </main>
 
-  <div id="footer-placeholder">...</div>
+  <div id="footer-placeholder"></div>
 
-  <!-- Firebase (Module) -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
     const firebaseConfig = {
-      apiKey:"AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
-      authDomain:"eleganthome-bookings.firebaseapp.com",
-      databaseURL:"https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId:"eleganthome-bookings",
-      storageBucket:"eleganthome-bookings.firebasestorage.app",
-      messagingSenderId:"298973220569",
-      appId:"1:298973220569:web:2176ee2ef196a15e4238c8"
+      apiKey: "AIzaSyCXKki4JBPKpvH-JIJvdIQ_K7Byu61OBZ8",
+      authDomain: "eleganthome-bookings.firebaseapp.com",
+      databaseURL: "https://eleganthome-bookings-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "eleganthome-bookings",
+      storageBucket: "eleganthome-bookings.firebasestorage.app",
+      messagingSenderId: "298973220569",
+      appId: "1:298973220569:web:2176ee2ef196a15e4238c8"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db  = getDatabase(app);
+    const db = getDatabase(app);
 
-    const form = document.getElementById('bookingForm');
-    const res  = document.getElementById('res');
-
-    form.addEventListener('submit', async (e)=>{
+    document.getElementById("bookingForm").addEventListener("submit", async e => {
       e.preventDefault();
-      const data = {
-        name: form.name.value.trim(),
-        email: form.email.value.trim(),
-        phone: form.phone.value.trim(),
-        service: form.service.value,
-        message: form.message.value.trim(),
-        date: new Date().toLocaleString('ar-SA')
-      };
-      if(!data.name || !data.email || !data.phone){
-        res.textContent='يرجى إكمال الحقول المطلوبة'; res.style.color='crimson'; return;
-      }
-      try{
-        const id = push(ref(db,'bookings'));
-        await set(id, data);
-        res.textContent='✅ تم الإرسال وحفظ الطلب'; res.style.color='limegreen'; form.reset();
-      }catch(err){
-        console.error(err); res.textContent='⚠️ تعذر الإرسال، حاول لاحقًا'; res.style.color='crimson';
-      }
+      const name = customerName.value.trim();
+      const phone = phone.value.trim();
+      const product = document.getElementById("product").value;
+
+      if (!name || !phone) return alert("الرجاء تعبئة جميع الحقول");
+
+      const newBooking = push(ref(db, "bookings"));
+      await set(newBooking, { name, phone, product, date: new Date().toLocaleString() });
+      document.getElementById("statusMsg").textContent = "✅ تم إرسال الحجز بنجاح!";
+      e.target.reset();
     });
   </script>
 
   <script>
-    (async function(){
-      const inc=async(id,file)=>{const el=document.getElementById(id);try{const r=await fetch(file);el.innerHTML=await r.text();}catch{el.innerHTML='<p>تعذر تحميل '+file+'</p>';}}
-      await inc('header-placeholder','./header.html');
-      await inc('footer-placeholder','./footer.html');
+    (async()=>{
+      const inc=async(id,file)=>{const el=document.getElementById(id);const r=await fetch(file);el.innerHTML=await r.text();}
+      await inc("header-placeholder","./header.html");
+      await inc("footer-placeholder","./footer.html");
     })();
+  </script>
+
+  <script>
+    setTimeout(()=>{
+      const b=document.getElementById('hx-burger'),d=document.getElementById('hx-drawer'),c=document.getElementById('hx-close'),bg=document.getElementById('hx-backdrop');
+      if(!b||!d)return;const open=()=>{d.classList.add('active');bg.classList.add('active');document.body.style.overflow='hidden';}
+      const close=()=>{d.classList.remove('active');bg.classList.remove('active');document.body.style.overflow='';}
+      b.onclick=open;c.onclick=close;bg.onclick=close;
+    },800);
   </script>
 </body>
 </html>

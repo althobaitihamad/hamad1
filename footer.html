@@ -1,18 +1,37 @@
-<footer id="lux-footer" dir="rtl" lang="ar">
+<footer id="lux-footer" dir="rtl">
   <style>
-    :root{--bg1:#0c0c0f; --bg2:#131318; --gold:#d1aa6e}
-    #lux-footer{font-family:"Tajawal","Noto Naskh Arabic UI",sans-serif; background:linear-gradient(180deg,var(--bg1),var(--bg2)); color:#ddd; border-top:1px solid #232331; margin-top:60px}
-    .fx{max-width:1200px;margin:auto;padding:24px 16px;text-align:center}
-    .fx p{margin:6px 0}
-    .fx span{color:var(--gold);font-weight:900}
-    .small{color:#999;font-size:.9rem}
+    :root {
+      --bg1: #0c0c0f;
+      --bg2: #131318;
+      --gold: #d1aa6e;
+    }
+
+    #lux-footer {
+      font-family: "Tajawal", sans-serif;
+      background: linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: #ddd;
+      border-top: 1px solid #232331;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+    }
+
+    #lux-footer span {
+      color: var(--gold);
+      font-weight: bold;
+    }
   </style>
-  <div class="fx">
-    <p>© <span>المنزل الراقي</span> — تصميم: <span>حمد الثبيتي</span></p>
-    <p class="small">آخر تحديث: <span id="lux-date"></span></p>
-  </div>
+
+  <p>© <span>المنزل الراقي</span> — تصميم: <span>حمد الثبيتي</span></p>
+  <p id="date"></p>
+
   <script>
-    const now=new Date();
-    document.getElementById('lux-date').textContent = new Intl.DateTimeFormat('ar-SA',{year:'numeric',month:'long',day:'numeric'}).format(now);
+    document.getElementById("date").textContent =
+      "آخر تحديث: " +
+      new Date().toLocaleDateString("ar-SA", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
   </script>
 </footer>
