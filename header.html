@@ -1,168 +1,76 @@
-<header id="lux-header" dir="rtl" lang="ar" data-init="false">
+<header id="lux-header" dir="rtl" lang="ar">
   <style>
-    :root {
-      --bg1: #0c0c0f;
-      --bg2: #131318;
-      --gold: #d1aa6e;
-      --gold2: #b98c4f;
-      --text: #f0eff7;
+    :root{
+      --bg1:#0c0c0f; --bg2:#131318;
+      --gold:#d1aa6e; --gold2:#b98c4f;
+      --text:#f0eff7;
     }
-
-    #lux-header {
-      font-family: "Tajawal", sans-serif;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: linear-gradient(90deg, var(--bg1), var(--bg2));
-      border-bottom: 1px solid #1e1e26;
-      z-index: 10000;
+    #lux-header{
+      font-family:"Tajawal",sans-serif;
+      position:fixed; top:0; right:0; left:0; z-index:10000;
+      background:linear-gradient(90deg,var(--bg1),var(--bg2));
+      border-bottom:1px solid #1e1e26;
+      color:var(--text);
     }
-
-    .hx-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      color: var(--text);
+    .hx-top{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 16px;
     }
-
-    .hx-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--gold);
-      font-weight: 900;
-      white-space: nowrap;
+    .hx-logo{
+      display:flex; align-items:center; gap:8px;
+      text-decoration:none; color:var(--gold); font-weight:900; white-space:nowrap;
     }
-
-    .hx-logo img {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 2px solid var(--gold);
-      object-fit: cover;
+    .hx-logo img{ width:46px; height:46px; border-radius:50%; border:2px solid var(--gold); object-fit:cover; }
+    .hx-burger{
+      display:none; width:44px; height:42px; border-radius:8px;
+      background:#191921; border:1px solid #2a2a36; color:var(--gold);
+      font-size:24px; cursor:pointer;
     }
+    .hx-burger:active{ transform:scale(.96); }
 
-    .hx-burger {
-      display: none;
-      width: 44px;
-      height: 42px;
-      border-radius: 8px;
-      background: #191921;
-      border: 1px solid #2a2a36;
-      color: var(--gold);
-      font-size: 24px;
-      cursor: pointer;
+    .hx-sub{ display:flex; gap:10px; overflow-x:auto; padding:8px 16px; background:#0f0f14; border-top:1px solid #1c1c24; }
+    .hx-sub a{
+      color:#ddd; text-decoration:none; padding:8px 12px; border-radius:10px;
+      background:#19191f; white-space:nowrap; font-weight:800;
     }
+    .hx-sub a:hover{ background:#252530; }
 
-    .hx-burger:active {
-      transform: scale(0.96);
+    .hx-backdrop{
+      position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px);
+      opacity:0; visibility:hidden; transition:.3s; z-index:9998;
     }
+    .hx-backdrop.active{ opacity:1; visibility:visible; }
 
-    .hx-sub {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding: 8px 16px;
-      background: #0f0f14;
-      border-top: 1px solid #1c1c24;
+    .hx-drawer{
+      position:fixed; top:0; right:-100%; height:100vh; width:80%; max-width:320px;
+      background:#11121a; border-left:1px solid #2a2a36; transition:right .35s ease;
+      z-index:9999; display:flex; flex-direction:column;
     }
-
-    .hx-sub a {
-      color: #ddd;
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: #19191f;
-      white-space: nowrap;
-      font-weight: 800;
+    .hx-drawer.active{ right:0; }
+    .hx-drawer-head{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 18px; border-bottom:1px solid #2a2a36; color:#fff;
     }
-
-    .hx-sub a:hover {
-      background: #252530;
+    .hx-close{
+      width:38px; height:36px; border-radius:10px; border:1px solid #2a2a36;
+      background:#191921; color:#fff; cursor:pointer;
     }
-
-    .hx-drawer {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 320px;
-      height: 100vh;
-      background: #11121a;
-      border-left: 1px solid #2a2a36;
-      z-index: 9999;
-      transition: right 0.35s ease;
-      display: flex;
-      flex-direction: column;
+    .hx-drawer nav a{
+      display:block; padding:14px 18px; color:#fff; text-decoration:none; font-weight:800;
+      border-bottom:1px solid #232331;
     }
+    .hx-drawer nav a:hover{ background:#1b1b23; }
 
-    .hx-drawer.active {
-      right: 0;
-    }
-
-    .hx-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      opacity: 0;
-      visibility: hidden;
-      transition: 0.3s;
-      z-index: 9998;
-    }
-
-    .hx-backdrop.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .hx-drawer-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 18px;
-      border-bottom: 1px solid #2a2a36;
-      color: #fff;
-    }
-
-    .hx-close {
-      width: 38px;
-      height: 36px;
-      border-radius: 10px;
-      border: 1px solid #2a2a36;
-      background: #191921;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .hx-drawer nav a {
-      display: block;
-      padding: 14px 18px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 800;
-      border-bottom: 1px solid #232331;
-    }
-
-    .hx-drawer nav a:hover {
-      background: #1b1b23;
-    }
-
-    @media (max-width: 950px) {
-      .hx-burger {
-        display: block;
-      }
-      .hx-sub {
-        display: none;
-      }
+    @media(max-width:950px){
+      .hx-burger{ display:block; }
+      .hx-sub{ display:none; }
     }
   </style>
 
   <div class="hx-top">
-    <button id="hx-burger" class="hx-burger">☰</button>
-    <a href="./index.html" class="hx-logo">
+    <!-- زر البرجر أعلى اليمين -->
+    <button id="hx-burger" class="hx-burger" aria-label="فتح القائمة">☰</button>
+    <a href="./index.html" class="hx-logo" aria-label="المنزل الراقي">
       <img src="./midea/h1000.jpeg" alt="شعار المنزل الراقي">
       <span>المنزل الراقي</span>
     </a>
@@ -178,10 +86,10 @@
   </div>
 
   <div id="hx-backdrop" class="hx-backdrop"></div>
-  <aside id="hx-drawer" class="hx-drawer">
+  <aside id="hx-drawer" class="hx-drawer" aria-hidden="true">
     <div class="hx-drawer-head">
       <strong>القائمة</strong>
-      <button id="hx-close" class="hx-close">✕</button>
+      <button id="hx-close" class="hx-close" aria-label="إغلاق">✕</button>
     </div>
     <nav>
       <a href="./index.html">🏠 الرئيسية</a>
@@ -192,4 +100,24 @@
       <a href="./contact.html">📞 تواصل معنا</a>
     </nav>
   </aside>
+
+  <script>
+    // يعمل في كل صفحة تُضمَّن فيها الهيدر
+    (function initHeader(){
+      try{
+        const burger = document.getElementById('hx-burger');
+        const drawer = document.getElementById('hx-drawer');
+        const closeBtn = document.getElementById('hx-close');
+        const backdrop = document.getElementById('hx-backdrop');
+        if(!burger || !drawer || !closeBtn || !backdrop) return;
+
+        const open = ()=>{ drawer.classList.add('active'); backdrop.classList.add('active'); document.body.style.overflow='hidden'; drawer.setAttribute('aria-hidden','false'); };
+        const close = ()=>{ drawer.classList.remove('active'); backdrop.classList.remove('active'); document.body.style.overflow=''; drawer.setAttribute('aria-hidden','true'); };
+
+        burger.onclick=open; closeBtn.onclick=close; backdrop.onclick=close;
+        // إغلاق بالهروب
+        document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
+      }catch(e){ console.warn('Header init error',e); }
+    })();
+  </script>
 </header>

@@ -5,53 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>الحجوزات | المنزل الراقي</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Tajawal", sans-serif;
-      background: #0c0c0f;
-      color: #fff;
-      padding-top: 120px;
-    }
-
-    main {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #16161c;
-      padding: 30px;
-      border-radius: 12px;
-      border: 1px solid #2a2a36;
-    }
-
-    h1 {
-      text-align: center;
-      color: #d1aa6e;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    input, select {
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background: #0f0f14;
-      color: #fff;
-    }
-
-    button {
-      background: linear-gradient(180deg, #d1aa6e, #b98c4f);
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+    body{ margin:0; font-family:"Tajawal",sans-serif; background:#0c0c0f; color:#fff; padding-top:120px; }
+    main{ max-width:800px; margin:0 auto; background:#16161c; padding:30px; border-radius:12px; border:1px solid #2a2a36; }
+    h1{ text-align:center; color:#d1aa6e; }
+    form{ display:flex; flex-direction:column; gap:15px; }
+    input,select{ padding:12px; border-radius:8px; border:1px solid #333; background:#0f0f14; color:#fff; }
+    button{ background:linear-gradient(180deg,#d1aa6e,#b98c4f); border:none; border-radius:8px; padding:10px 16px; font-weight:800; cursor:pointer; }
   </style>
 </head>
-
 <body>
   <div id="header-placeholder"></div>
 
@@ -72,6 +33,7 @@
 
   <div id="footer-placeholder"></div>
 
+  <!-- Firebase: حفظ الحجوزات -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
@@ -89,36 +51,27 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    document.getElementById("bookingForm").addEventListener("submit", async e => {
+    document.getElementById("bookingForm").addEventListener("submit", async (e)=>{
       e.preventDefault();
-      const name = customerName.value.trim();
-      const phone = phone.value.trim();
+      const name = document.getElementById("customerName").value.trim();
+      const phone = document.getElementById("phone").value.trim();
       const product = document.getElementById("product").value;
+      if(!name || !phone){ alert("الرجاء تعبئة جميع الحقول"); return; }
 
-      if (!name || !phone) return alert("الرجاء تعبئة جميع الحقول");
-
-      const newBooking = push(ref(db, "bookings"));
-      await set(newBooking, { name, phone, product, date: new Date().toLocaleString() });
-      document.getElementById("statusMsg").textContent = "✅ تم إرسال الحجز بنجاح!";
+      const newBooking = push(ref(db,"bookings"));
+      await set(newBooking,{ name, phone, product, date:new Date().toLocaleString() });
+      document.getElementById("statusMsg").textContent="✅ تم إرسال الحجز بنجاح!";
       e.target.reset();
     });
   </script>
 
+  <!-- تضمين الهيدر والفوتر -->
   <script>
     (async()=>{
       const inc=async(id,file)=>{const el=document.getElementById(id);const r=await fetch(file);el.innerHTML=await r.text();}
       await inc("header-placeholder","./header.html");
       await inc("footer-placeholder","./footer.html");
     })();
-  </script>
-
-  <script>
-    setTimeout(()=>{
-      const b=document.getElementById('hx-burger'),d=document.getElementById('hx-drawer'),c=document.getElementById('hx-close'),bg=document.getElementById('hx-backdrop');
-      if(!b||!d)return;const open=()=>{d.classList.add('active');bg.classList.add('active');document.body.style.overflow='hidden';}
-      const close=()=>{d.classList.remove('active');bg.classList.remove('active');document.body.style.overflow='';}
-      b.onclick=open;c.onclick=close;bg.onclick=close;
-    },800);
   </script>
 </body>
 </html>

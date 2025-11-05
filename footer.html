@@ -1,25 +1,13 @@
 <footer id="lux-footer" dir="rtl">
   <style>
-    :root {
-      --bg1: #0c0c0f;
-      --bg2: #131318;
-      --gold: #d1aa6e;
+    :root{ --bg1:#0c0c0f; --bg2:#131318; --gold:#d1aa6e; }
+    #lux-footer{
+      font-family:"Tajawal",sans-serif;
+      background:linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:#ddd; border-top:1px solid #232331; text-align:center;
+      padding:20px; margin-top:60px;
     }
-
-    #lux-footer {
-      font-family: "Tajawal", sans-serif;
-      background: linear-gradient(180deg, var(--bg1), var(--bg2));
-      color: #ddd;
-      border-top: 1px solid #232331;
-      text-align: center;
-      padding: 20px;
-      margin-top: 60px;
-    }
-
-    #lux-footer span {
-      color: var(--gold);
-      font-weight: bold;
-    }
+    #lux-footer span{ color:var(--gold); font-weight:bold; }
   </style>
 
   <p>© <span>المنزل الراقي</span> — تصميم: <span>حمد الثبيتي</span></p>
@@ -27,11 +15,6 @@
 
   <script>
     document.getElementById("date").textContent =
-      "آخر تحديث: " +
-      new Date().toLocaleDateString("ar-SA", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+      "آخر تحديث: " + new Date().toLocaleDateString("ar-SA",{year:"numeric",month:"long",day:"numeric"});
   </script>
 </footer>

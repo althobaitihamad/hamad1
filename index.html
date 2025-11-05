@@ -5,93 +5,33 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>المنزل الراقي</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Tajawal", sans-serif;
-      background: #0c0c0f;
-      color: #fff;
-      padding-top: 116px;
+    body{
+      margin:0; font-family:"Tajawal",sans-serif; background:#0c0c0f; color:#fff;
+      padding-top:116px;
     }
-
-    .hero {
-      position: relative;
-      height: 80vh;
-      overflow: hidden;
-      border-radius: 16px;
-      margin: 0 16px;
+    .hero{ position:relative; height:80vh; overflow:hidden; border-radius:16px; margin:0 16px; }
+    .hero video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(0.5); }
+    .hero .content{
+      position:absolute; top:50%; right:5%; transform:translateY(-50%);
+      background:rgba(0,0,0,.5); padding:20px; border-radius:10px; max-width:450px;
     }
-
-    .hero video {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.5);
-    }
-
-    .hero .content {
-      position: absolute;
-      top: 50%;
-      right: 5%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 450px;
-    }
-
-    .hero button {
-      background: linear-gradient(180deg, #d1aa6e, #b98c4f);
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 18px;
-      padding: 20px;
-    }
-
-    .card {
-      background: #16161c;
-      border: 1px solid #232331;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: 0.25s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-    }
-
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    .card .info {
-      padding: 12px;
-    }
-
-    .price {
-      color: #d1aa6e;
-      font-weight: 900;
-    }
+    .hero button{ background:linear-gradient(180deg,#d1aa6e,#b98c4f); border:none; border-radius:8px; padding:10px 16px; font-weight:800; cursor:pointer; }
+    h2{ padding-right:20px; }
+    .products{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; padding:20px; }
+    .card{ background:#16161c; border:1px solid #232331; border-radius:12px; overflow:hidden; transition:.25s; }
+    .card:hover{ transform:translateY(-4px); }
+    .card img{ width:100%; height:200px; object-fit:cover; }
+    .card .info{ padding:12px; }
+    .price{ color:#d1aa6e; font-weight:900; }
   </style>
 </head>
-
 <body>
   <div id="header-placeholder"></div>
 
   <main>
-    <section class="hero">
+    <section class="hero" id="home">
       <video autoplay muted loop playsinline>
-        <source src="./midea/video2.mp4" type="video/mp4" />
+        <source src="./midea/video2.mp4" type="video/mp4">
       </video>
       <div class="content">
         <h1>لمسة فاخرة لكل ركن في منزلك ✨</h1>
@@ -101,20 +41,36 @@
     </section>
 
     <section id="products">
-      <h2 style="padding-right:20px;">أحدث المنتجات</h2>
+      <h2>أحدث المنتجات</h2>
       <div class="products" id="productList"></div>
+    </section>
+
+    <section id="offers">
+      <h2>العروض</h2>
+      <p style="padding:0 20px 20px;">خصومات موسمية على مختاراتنا الفاخرة.</p>
+    </section>
+
+    <section id="features">
+      <h2>لماذا نحن</h2>
+      <ul style="padding:0 40px 20px; line-height:2;">
+        <li>خامات ممتازة وضمان جودة</li>
+        <li>تسليم سريع وخدمة ما بعد البيع</li>
+        <li>تصاميم متجددة تواكب الذوق الراقي</li>
+      </ul>
     </section>
   </main>
 
   <div id="footer-placeholder"></div>
 
   <script>
+    // تضمين الهيدر والفوتر
     (async()=>{
       const inc=async(id,file)=>{const el=document.getElementById(id);const r=await fetch(file);el.innerHTML=await r.text();}
       await inc("header-placeholder","./header.html");
       await inc("footer-placeholder","./footer.html");
     })();
 
+    // بطاقات المنتجات (صور من Unsplash)
     const products=[
       {name:"طاولة خشبية فاخرة",price:"450 ريال",img:"https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80"},
       {name:"مصباح مكتبي أنيق",price:"180 ريال",img:"https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80"},
@@ -128,16 +84,6 @@
       c.innerHTML=`<img src="${p.img}" alt="${p.name}"><div class="info"><h3>${p.name}</h3><div class="price">${p.price}</div></div>`;
       list.appendChild(c);
     });
-  </script>
-
-  <!-- إصلاح زر القائمة -->
-  <script>
-    setTimeout(()=>{
-      const b=document.getElementById('hx-burger'),d=document.getElementById('hx-drawer'),c=document.getElementById('hx-close'),bg=document.getElementById('hx-backdrop');
-      if(!b||!d)return;const open=()=>{d.classList.add('active');bg.classList.add('active');document.body.style.overflow='hidden';}
-      const close=()=>{d.classList.remove('active');bg.classList.remove('active');document.body.style.overflow='';}
-      b.onclick=open;c.onclick=close;bg.onclick=close;
-    },800);
   </script>
 </body>
 </html>
